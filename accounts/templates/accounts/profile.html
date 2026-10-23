@@ -1,0 +1,1054 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ profile_user.username }} | Profile</title>
+
+    <link rel="stylesheet" href="{% static 'accounts/profile.css' %}">
+
+
+    <style>
+        /* =========================
+           FOLLOWING POPUP
+        ========================= */
+
+        .following-modal {
+
+            display: none;
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            background: rgba(0, 0, 0, 0.55);
+
+            z-index: 9999;
+
+            align-items: center;
+            justify-content: center;
+
+        }
+
+
+        .following-modal.show {
+
+            display: flex;
+
+        }
+
+
+        /* POPUP BOX */
+
+        .following-modal-box {
+
+            width: 430px;
+
+            max-width: 92%;
+
+            max-height: 75vh;
+
+            background: white;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 15px 50px rgba(0, 0, 0, 0.25);
+
+            animation: followingPopup 0.2s ease;
+
+        }
+
+
+        @keyframes followingPopup {
+
+            from {
+
+                transform: scale(0.95);
+
+                opacity: 0;
+
+            }
+
+            to {
+
+                transform: scale(1);
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+        /* HEADER */
+
+        .following-header {
+
+            height: 55px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+
+            border-bottom: 1px solid #eee;
+
+        }
+
+
+        .following-header h3 {
+
+            margin: 0;
+
+            font-size: 17px;
+
+        }
+
+
+        /* CLOSE BUTTON */
+
+        .following-header button {
+
+            position: absolute;
+
+            right: 15px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 28px;
+
+            cursor: pointer;
+
+            color: #555;
+
+        }
+
+
+        .following-header button:hover {
+
+            color: #000;
+
+        }
+
+
+        /* LIST */
+
+        .following-list {
+
+            max-height: calc(75vh - 55px);
+
+            overflow-y: auto;
+
+        }
+
+
+        /* USER */
+
+        .following-user {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 12px 16px;
+
+            border-bottom: 1px solid #f1f1f1;
+
+        }
+
+
+        /* USER INFO */
+
+        .following-user-info {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            text-decoration: none;
+
+            color: inherit;
+
+            min-width: 0;
+
+        }
+
+
+        /* IMAGE */
+
+        .following-user-info img {
+
+            width: 48px;
+
+            height: 48px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            flex-shrink: 0;
+
+        }
+
+
+        /* USERNAME */
+
+        .following-user-info strong {
+
+            display: block;
+
+            font-size: 14px;
+
+        }
+
+
+        /* BIO */
+
+        .following-user-info p {
+
+            margin: 3px 0 0;
+
+            color: #777;
+
+            font-size: 12px;
+
+            max-width: 200px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        /* FOLLOWING BUTTON */
+
+        .following-btn {
+
+            padding: 7px 14px;
+
+            background: #f1f1f1;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            color: #222;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            flex-shrink: 0;
+
+        }
+
+
+        /* EMPTY */
+
+        .no-following {
+
+            text-align: center;
+
+            padding: 50px 20px;
+
+            color: #777;
+
+        }
+
+
+        .no-following i {
+
+            font-size: 35px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .no-following h4 {
+
+            margin: 10px 0 5px;
+
+            color: #333;
+
+        }
+
+
+        .no-following p {
+
+            margin: 0;
+
+            font-size: 13px;
+
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 500px) {
+
+            .following-modal-box {
+
+                width: 94%;
+
+            }
+
+        }
+
+        /* =========================
+   FOLLOWERS MODAL
+========================= */
+
+        .followers-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .followers-modal.show {
+            display: flex;
+        }
+
+        .followers-modal-box {
+            width: 430px;
+            max-width: 92%;
+            max-height: 75vh;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .followers-header {
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-bottom: 1px solid #eee;
+        }
+
+        .followers-header h3 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .followers-header button {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            font-size: 28px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .followers-list {
+            max-height: calc(75vh - 55px);
+            overflow-y: auto;
+        }
+
+        .follower-user {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .follower-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+            min-width: 0;
+        }
+
+        .follower-user-info img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .follower-user-info strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .follower-user-info p {
+            margin: 3px 0 0;
+            color: #777;
+            font-size: 12px;
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .follower-btn {
+            padding: 7px 14px;
+            background: #f1f1f1;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #222;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .no-followers {
+            text-align: center;
+            padding: 50px 20px;
+            color: #777;
+        }
+
+        .no-followers h4 {
+            margin: 10px 0 5px;
+            color: #333;
+        }
+
+        .no-followers p {
+            margin: 0;
+            font-size: 13px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         PROFILE
+    ========================== -->
+
+    <div class="profile-container">
+
+        <div class="profile-header">
+
+
+            <!-- PROFILE IMAGE -->
+
+            <div class="profile-pic-box">
+
+                <img src="{{ user_profile.profile_image.url }}" class="profile-pic" alt="{{ profile_user.username }}">
+
+            </div>
+
+
+            <!-- PROFILE INFO -->
+
+            <div class="profile-info">
+
+
+                <!-- USERNAME -->
+
+                <h1 class="username">
+
+                    {{ profile_user.username }}
+
+                </h1>
+
+
+                <!-- =========================
+                     STATS
+                ========================== -->
+
+                <div class="stats-container">
+
+
+                    <!-- POSTS -->
+
+                    <div class="stat-box">
+
+                        <h4>
+                            Posts
+                        </h4>
+
+                        <p>
+                            {{ user_blogs|length }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- FOLLOWERS -->
+
+                    <div class="stat-box" id="followersStat" style="cursor: pointer;">
+                        <h4>Followers</h4>
+                        <p>{{ profile_user.profile.followers.count }}</p>
+                    </div>
+
+
+                    <!-- FOLLOWING -->
+
+                    <div class="stat-box following-stat" id="followingStat">
+
+                        <h4>
+                            Following
+                        </h4>
+
+                        <p>
+                            {{ profile_user.following.count }}
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- BIO -->
+
+                <p class="bio">
+
+                    {{ user_profile.bio|linebreaksbr }}
+
+                </p>
+
+
+                <!-- BUTTONS -->
+
+                <div class="profile-buttons">
+
+
+                    {% if request.user == profile_user %}
+
+
+                    <!-- EDIT PROFILE -->
+
+                    <a href="{% url 'edit_profile' %}" class="edit-btn">
+
+                        Edit Profile
+
+                    </a>
+
+
+                    {% else %}
+
+
+                    <!-- FOLLOW -->
+
+                    <form method="POST" action="{% url 'follow_user' profile_user.username %}">
+
+                        {% csrf_token %}
+
+
+                        {% if request.user in profile_user.profile.followers.all %}
+
+                        <button type="submit" class="follow-btn unfollow-btn">
+
+                            Following
+
+                        </button>
+
+                        {% else %}
+
+                        <button type="submit" class="follow-btn">
+
+                            Follow
+
+                        </button>
+
+                        {% endif %}
+
+                    </form>
+
+
+                    <!-- MESSAGE -->
+
+                    <a href="{% url 'chat' profile_user.username %}" class="message-btn">
+
+                        Message
+
+                    </a>
+
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         BLOG SECTION
+    ========================== -->
+
+    <div class="profile-blogs-section">
+
+        <h2>
+            My Blogs
+        </h2>
+
+
+        <div class="blog-grid">
+
+
+            {% for blog in user_blogs %}
+
+
+            <div class="blog-card">
+
+
+                {% if blog.image %}
+
+                <img src="{{ blog.image.url }}" class="blog-image" alt="{{ blog.title }}">
+
+                {% endif %}
+
+
+                <div class="blog-content">
+
+                    <h3>
+                        {{ blog.title }}
+                    </h3>
+
+                    <p>
+                        {{ blog.content|truncatewords:12 }}
+                    </p>
+
+                    <a href="{% url 'blog_detail' blog.id %}" class="read-more">
+
+                        Read More
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+
+            {% empty %}
+
+            <p>
+                No blogs posted yet.
+            </p>
+
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FOLLOWING POPUP
+    ================================================== -->
+
+    <div class="following-modal" id="followingModal">
+
+        <div class="following-modal-box">
+
+            <div class="following-header">
+                <h3>Following</h3>
+
+                <button type="button" id="closeFollowing">
+                    &times;
+                </button>
+            </div>
+
+            <div class="following-list">
+
+                {% for profile in profile_user.following.all %}
+
+                <div class="following-user">
+
+                    <a href="{% url 'profile_view' profile.user.username %}" class="following-user-info">
+
+                        <!-- PROFILE IMAGE -->
+                        <img src="{{ profile.profile_image.url }}" alt="{{ profile.user.username }}">
+
+                        <div>
+                            <strong>
+                                {{ profile.user.username }}
+                            </strong>
+
+                            {% if profile.bio %}
+                            <p>
+                                {{ profile.bio|truncatechars:45 }}
+                            </p>
+                            {% endif %}
+                        </div>
+
+                    </a>
+
+
+                </div>
+
+                {% empty %}
+
+                <div class="no-following">
+                    <h4>No following yet</h4>
+                    <p>This user is not following anyone yet.</p>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- followers pop up -->
+    <div class="followers-modal" id="followersModal">
+
+        <div class="followers-modal-box">
+
+            <div class="followers-header">
+                <h3>Followers</h3>
+
+                <button type="button" id="closeFollowers">
+                    &times;
+                </button>
+            </div>
+
+            <div class="followers-list">
+
+                {% for follower in profile_user.profile.followers.all %}
+
+                <div class="follower-user">
+
+                    <a href="{% url 'profile_view' follower.username %}" class="follower-user-info">
+
+                        <!-- PROFILE IMAGE -->
+                        <img src="{{ follower.profile.profile_image.url }}" alt="{{ follower.username }}">
+
+                        <div>
+                            <strong>
+                                {{ follower.username }}
+                            </strong>
+
+                            {% if follower.profile.bio %}
+                            <p>
+                                {{ follower.profile.bio|truncatechars:45 }}
+                            </p>
+                            {% endif %}
+                        </div>
+
+                    </a>
+
+
+                </div>
+
+                {% empty %}
+
+                <div class="no-followers">
+                    <h4>No followers yet</h4>
+                    <p>This user doesn't have any followers yet.</p>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- =================================================
+         JAVASCRIPT
+    ================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                const followingStat =
+                    document.getElementById(
+                        "followingStat"
+                    );
+
+
+                const followingModal =
+                    document.getElementById(
+                        "followingModal"
+                    );
+
+
+                const closeFollowing =
+                    document.getElementById(
+                        "closeFollowing"
+                    );
+
+
+                /* OPEN POPUP */
+
+                if (
+                    followingStat &&
+                    followingModal
+                ) {
+
+                    followingStat.addEventListener(
+                        "click",
+                        function () {
+
+                            followingModal.classList.add(
+                                "show"
+                            );
+
+                        }
+                    );
+
+                }
+
+
+                /* CLOSE BUTTON */
+
+                if (
+                    closeFollowing &&
+                    followingModal
+                ) {
+
+                    closeFollowing.addEventListener(
+                        "click",
+                        function () {
+
+                            followingModal.classList.remove(
+                                "show"
+                            );
+
+                        }
+                    );
+
+                }
+
+
+                /* CLICK OUTSIDE */
+
+                if (followingModal) {
+
+                    followingModal.addEventListener(
+                        "click",
+                        function (event) {
+
+
+                            if (
+                                event.target ===
+                                followingModal
+                            ) {
+
+                                followingModal.classList.remove(
+                                    "show"
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                /* ESCAPE KEY */
+
+                document.addEventListener(
+                    "keydown",
+                    function (event) {
+
+
+                        if (
+                            event.key === "Escape" &&
+                            followingModal
+                        ) {
+
+                            followingModal.classList.remove(
+                                "show"
+                            );
+
+                        }
+
+                    }
+                );
+
+
+            }
+        );
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /* =========================
+               FOLLOWING MODAL
+            ========================= */
+
+            const followingStat =
+                document.getElementById("followingStat");
+
+            const followingModal =
+                document.getElementById("followingModal");
+
+            const closeFollowing =
+                document.getElementById("closeFollowing");
+
+
+            if (followingStat && followingModal) {
+
+                followingStat.addEventListener("click", function () {
+
+                    followingModal.classList.add("show");
+
+                });
+
+            }
+
+
+            if (closeFollowing && followingModal) {
+
+                closeFollowing.addEventListener("click", function () {
+
+                    followingModal.classList.remove("show");
+
+                });
+
+            }
+
+
+            /* =========================
+               FOLLOWERS MODAL
+            ========================= */
+
+            const followersStat =
+                document.getElementById("followersStat");
+
+            const followersModal =
+                document.getElementById("followersModal");
+
+            const closeFollowers =
+                document.getElementById("closeFollowers");
+
+
+            if (followersStat && followersModal) {
+
+                followersStat.addEventListener("click", function () {
+
+                    followersModal.classList.add("show");
+
+                });
+
+            }
+
+
+            if (closeFollowers && followersModal) {
+
+                closeFollowers.addEventListener("click", function () {
+
+                    followersModal.classList.remove("show");
+
+                });
+
+            }
+
+
+            /* =========================
+               CLOSE WHEN CLICKING OUTSIDE
+            ========================= */
+
+            if (followingModal) {
+
+                followingModal.addEventListener("click", function (event) {
+
+                    if (event.target === followingModal) {
+
+                        followingModal.classList.remove("show");
+
+                    }
+
+                });
+
+            }
+
+
+            if (followersModal) {
+
+                followersModal.addEventListener("click", function (event) {
+
+                    if (event.target === followersModal) {
+
+                        followersModal.classList.remove("show");
+
+                    }
+
+                });
+
+            }
+
+
+            /* =========================
+               ESC KEY
+            ========================= */
+
+            document.addEventListener("keydown", function (event) {
+
+                if (event.key === "Escape") {
+
+                    if (followingModal) {
+
+                        followingModal.classList.remove("show");
+
+                    }
+
+                    if (followersModal) {
+
+                        followersModal.classList.remove("show");
+
+                    }
+
+                }
+
+            });
+
+        });
+    </script>
+
+
+</body>
+
+</html>

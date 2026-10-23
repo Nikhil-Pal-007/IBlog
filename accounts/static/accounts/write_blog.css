@@ -1,0 +1,66 @@
+body {
+            background: #fafafa;
+            font-family: Arial, sans-serif;
+        }
+
+        .write-container {
+            width: 70%;
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .write-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .write-container input,
+        .write-container textarea,
+        .write-container select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .write-container textarea {
+            min-height: 250px;
+            resize: vertical;
+        }
+
+        .post-btn {
+            width: 100%;
+            background: #0095f6;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .post-btn:hover {
+            background: #0077cc;
+        }
+        #writing-suggestions {
+    margin-top: 15px;
+}
+
+.suggestion-btn {
+    margin-left: 8px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+
+.suggestion-btn:hover {
+    background: #f0f0f0;
+}

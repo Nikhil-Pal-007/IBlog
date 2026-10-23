@@ -1,0 +1,170 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Summarizer</title>
+
+    <link rel="stylesheet" href="{% static 'ai_tools/summarizer.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header-row">
+
+            <a href="{% url 'home' %}" class="home-btn">
+                ← Home
+            </a>
+
+            <h1>📝 Blog Summarizer</h1>
+
+        </div>
+
+        <p class="subtitle">
+            Paste your blog and get an instant summary.
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <textarea
+                name="blog_text"
+                placeholder="Paste your blog here..."
+                required>{{ blog_text }}</textarea>
+
+            <p id="word-count">Words: 0</p>
+
+            <div class="summary-options">
+
+                <label>
+                    <input type="radio" name="length" value="3"
+                    {% if length == 3 %}checked{% endif %}>
+                    Short
+                </label>
+
+                <label>
+                    <input type="radio" name="length" value="5"
+                    {% if length == 5 %}checked{% endif %}>
+                    Medium
+                </label>
+
+                <label>
+                    <input type="radio" name="length" value="8"
+                    {% if length == 8 %}checked{% endif %}>
+                    Detailed
+                </label>
+
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Summarize
+            </button>
+
+        </form>
+
+        {% if summary %}
+
+        <div class="stats-container">
+
+            <div class="stat-card">
+                <h3>{{ original_words }}</h3>
+                <p>Original Words</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>{{ summary_words }}</h3>
+                <p>Summary Words</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>{{ compression }}%</h3>
+                <p>Reduced</p>
+            </div>
+
+        </div>
+
+        <div class="result-box">
+
+            <div class="result-header">
+
+                <h2>Summary</h2>
+
+                <button
+                    id="copy-btn"
+                    type="button"
+                    onclick="copySummary()">
+                    Copy
+                </button>
+
+            </div>
+
+            <p id="summary-text">
+                {{ summary }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <script>
+
+        const textarea = document.querySelector("textarea");
+        const counter = document.getElementById("word-count");
+
+        function updateWordCount() {
+
+            let words = textarea.value
+                .trim()
+                .split(/\s+/)
+                .filter(word => word.length > 0);
+
+            counter.textContent =
+                "Words: " +
+                (textarea.value.trim() ? words.length : 0);
+        }
+
+        textarea.addEventListener(
+            "input",
+            updateWordCount
+        );
+
+        updateWordCount();
+
+        function copySummary() {
+
+            let text =
+                document.getElementById(
+                    "summary-text"
+                ).innerText;
+
+            navigator.clipboard.writeText(text);
+
+            let btn =
+                document.getElementById(
+                    "copy-btn"
+                );
+
+            btn.innerText = "Copied ✓";
+            btn.style.backgroundColor = "green";
+
+            setTimeout(() => {
+
+                btn.innerText = "Copy";
+                btn.style.backgroundColor = "#4f46e5";
+
+            }, 3000);
+        }
+
+    </script>
+
+</body>
+
+</html>

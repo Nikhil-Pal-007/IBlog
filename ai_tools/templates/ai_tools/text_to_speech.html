@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Text To Speech</title>
+
+    <link rel="stylesheet" href="{% static 'ai_tools/text_to_speech.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header-row">
+
+            <div class="nav-buttons">
+
+                <a href="{% url 'home' %}" class="home-btn">
+                    ← Home
+                </a>
+
+                <a href="javascript:history.back()" class="previous-btn">
+                    ← Previous
+                </a>
+
+            </div>
+
+            <h1>🎤 Text To Speech</h1>
+
+        </div>
+
+        <p class="subtitle">
+            Convert your text into natural speech.
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <textarea name="text" placeholder="Paste your text here..." required>{{ text }}</textarea>
+
+            <p id="word-count">
+                Words: 0
+            </p>
+
+
+            <button type="submit" class="generate-btn">
+
+                Generate Speech
+
+            </button>
+
+        </form>
+        {% if error_message %}
+        <p class="error-message">{{ error_message }}</p>
+        {% endif %}
+        {% if audio_file %}
+
+        <div class="result-box">
+
+            <h2>Generated Audio</h2>
+
+            <audio controls>
+                <source src="{{ audio_file }}" type="audio/mpeg">
+            </audio>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <script>
+
+        const textarea =
+            document.querySelector(
+                "textarea"
+            );
+
+        const counter =
+            document.getElementById(
+                "word-count"
+            );
+
+        textarea.addEventListener(
+            "input",
+            function () {
+
+                let words =
+                    textarea.value
+                        .trim()
+                        .split(/\s+/)
+                        .filter(
+                            word =>
+                                word.length > 0
+                        );
+
+                counter.innerText =
+                    "Words: " +
+                    (
+                        textarea.value.trim()
+                            ? words.length
+                            : 0
+                    );
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

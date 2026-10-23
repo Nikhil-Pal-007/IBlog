@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ category }}</title>
+    <link rel="stylesheet" href="{% static 'accounts/category_blogs.css' %}">
+</head>
+<body>
+
+<div class="hero">
+
+    <h1>
+        {% if category == "Technology" %}
+            💻 Technology
+        {% elif category == "Travel" %}
+            🌍 Travel
+        {% elif category == "Food" %}
+            🍔 Food
+        {% elif category == "Entertainment" %}
+            🎬 Entertainment
+        {% elif category == "Fitness" %}
+            🏋️ Fitness
+        {% elif category == "Photography" %}
+            📸Photography
+        {% elif category == "Sports" %}
+            🏏 Sports
+        {% elif category == "SelfImprovement" %}
+            📈 Self Improvement
+        {% elif category == "PersonalStories" %}
+            ❤️ PersonalStories
+        {% else %}
+            📚 {{ category }}
+        {% endif %}
+    </h1>
+
+    <p>
+        Explore blogs, creators and trending ideas in this category.
+    </p>
+
+</div>
+
+<div class="stats">
+
+    <div class="stat-card">
+        <h2>{{ total_blogs }}+</h2>
+        <p>Blogs</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>{{ total_views }}</h2>
+        <p>Total Views</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>{{ top_creators|length }}</h2>
+        <p>Top Writers</p>
+    </div>
+
+</div>
+
+<section class="trending">
+
+    <h2>🔥 Trending Blogs</h2>
+
+    {% for blog in trending_blogs %}
+        <div class="trend-item">
+            <a href="{% url 'blog_detail' blog.id %}">
+                {{ blog.title }}
+            </a>
+
+            <span>{{ blog.views }} views</span>
+        </div>
+    {% empty %}
+        <p>No trending blogs yet.</p>
+    {% endfor %}
+
+</section>
+
+<section class="writers">
+
+    <h2>⭐ Top Creators</h2>
+
+    {% for creator in top_creators %}
+        <div class="writer-card">
+            <strong>@{{ creator.username }}</strong>
+            <p>{{ creator.total_blogs }} blogs</p>
+        </div>
+    {% empty %}
+        <p>No creators found.</p>
+    {% endfor %}
+
+</section>
+
+<section class="latest">
+
+    <h2>📰 Latest Blogs</h2>
+
+    <div class="blog-grid">
+
+        {% for blog in blogs %}
+
+        <div class="blog-card">
+
+            {% if blog.image %}
+                <img src="{{ blog.image.url }}">
+            {% endif %}
+
+            <div class="blog-content">
+
+                <h3>{{ blog.title }}</h3>
+
+                <p>
+                    {{ blog.content|truncatewords:20 }}
+                </p>
+
+                <a href="{% url 'blog_detail' blog.id %}">
+                    Read More →
+                </a>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p>No blogs available.</p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+</body>
+</html>

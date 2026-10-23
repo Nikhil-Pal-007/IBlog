@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{% static 'accounts/search.css' %}">
+</head>
+
+<body>
+
+    {% if users %}
+    <h2>Creators</h2>
+
+    {% for user in users %}
+
+    <div class="user-card">
+
+        <div class="search-avatar">
+            {% if user.profile.profile_image %}
+            <img src="{{ user.profile.profile_image.url }}" class="search-profile-img" alt="{{ user.username }}">
+            {% else %}
+            <div class="search-profile-placeholder">
+                {{ user.username|first|upper }}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="user-info">
+            <a href="{% url 'profile_view' user.username %}" class="username">
+                {{ user.username }}
+            </a>
+
+            <span class="posts">
+                {{ user.blogs.count }} posts
+            </span>
+
+            <p class="user-bio">
+                {{ user.profile.bio|default:"No bio available"|truncatechars:45 }}
+            </p>
+        </div>
+
+    </div>
+
+    {% endfor %}
+    {% endif %}
+
+
+    {% if blogs %}
+    <h2>Blogs</h2>
+
+    {% for blog in blogs %}
+    <div class="blog-card">
+
+        <h3>{{ blog.title }}</h3>
+
+        <p>{{ blog.content|truncatechars:120 }}</p>
+
+        <p class="blog-category">
+            Category: {{ blog.category }}
+        </p>
+
+        <p>
+            By {{ blog.user.username }}
+        </p>
+
+        <a href="{% url 'blog_detail' blog.id %}">
+            Read More
+        </a>
+
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
+    {% if categories %}
+    <h2>Categories</h2>
+
+    {% for category in categories %}
+    <div class="category-card">
+
+        <a href="{% url 'category_blogs' category.name %}">
+            {{ category.name }}
+        </a>
+
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
+    {% if not users and not blogs and not categories %}
+    <h2>No results found</h2>
+    <p>Try searching for a creator, blog title, or category.</p>
+    {% endif %}
+
+</body>
+
+</html>

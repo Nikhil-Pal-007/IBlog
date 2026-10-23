@@ -1,0 +1,246 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+}
+
+/* Profile */
+.profile-container {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 30px;
+}
+
+.profile-pic-box {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.username {
+    font-size: 28px;
+    margin: 0;
+}
+
+/* Stats */
+.stats-container {
+    display: flex;
+    gap: 30px;
+    margin: 10px 0;
+}
+
+.stat-box p {
+    font-weight: bold;
+    color: #0095f6;
+}
+
+
+/* Blog Section */
+.profile-blogs-section {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+/* GRID */
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 240px); /* Bigger width */
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* EDIT PROFILE BUTTON */
+.edit-btn {
+    padding: 8px 20px;
+
+    background: #efefef;
+
+    color: black;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: 0.3s ease;
+
+    display: inline-block;
+}
+
+/* HOVER */
+.edit-btn:hover {
+    transform: scale(1.03);
+
+    background: #dddddd;
+}
+
+
+
+/* CARD */
+.blog-card {
+    width: 240px;
+    height: 340px;   /* Bigger height */
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+}
+
+/* IMAGE */
+.blog-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+/* CONTENT */
+.blog-content {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.blog-content h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+.blog-content p {
+    font-size: 13px;
+    color: #555;
+    flex-grow: 1;   /* THIS pushes button down */
+    overflow: hidden;
+}
+
+/* BUTTON */
+.read-more {
+    margin-top: auto;   /* sticks to bottom */
+    font-size: 13px;
+    padding: 7px 10px;
+    background: #0095f6;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+
+.follow-btn,
+.unfollow-btn {
+    padding: 8px 14px;
+
+    border: none;
+
+    color: white;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    transition: 0.3s ease;
+}
+
+/* FOLLOW */
+.follow-btn {
+    background: #0095f6;
+}
+
+/* UNFOLLOW */
+.unfollow-btn {
+    background: #444;
+}
+
+
+/* INSTAGRAM STYLE BUTTONS */
+.profile-buttons {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+/* FOLLOW BUTTON */
+.follow-btn {
+    padding: 8px 20px;
+
+    background: #0095f6;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+/* FOLLOWING BUTTON */
+.unfollow-btn {
+    background: #363636;
+}
+
+/* MESSAGE BUTTON */
+.message-btn {
+    padding: 8px 20px;
+
+    background: #efefef;
+
+    color: black;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: 0.3s ease;
+}
+
+/* HOVER */
+.follow-btn:hover,
+.unfollow-btn:hover,
+.message-btn:hover {
+    transform: scale(1.03);
+}
+
+

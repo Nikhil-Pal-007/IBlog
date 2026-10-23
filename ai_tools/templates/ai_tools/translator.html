@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translator | iBlog</title>
+    <link rel="stylesheet" href="{% static 'ai_tools/translator.css' %}">
+</head>
+
+<body>
+<div class="container">
+
+    <div class="header-row">
+        <div class="nav-buttons">
+            <a href="{% url 'home' %}" class="home-btn">← Home</a>
+            <a href="javascript:history.back()" class="previous-btn">
+                ← Previous
+            </a>
+        </div>
+        <h1>🌍 Translator</h1>
+    </div>
+
+    <p class="subtitle">
+        Translate your text between English and Hindi, even offline.
+    </p>
+
+    {% if message %}
+        <div class="alert-box" role="alert">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <form method="POST" id="translate-form">
+        {% csrf_token %}
+
+        <textarea
+            name="text"
+            id="source-text"
+            placeholder="Enter text to translate..."
+            maxlength="5000"
+            required
+        >{{ text|default:"" }}</textarea>
+
+        <div class="language-section">
+            <label for="source_language">Translate From</label>
+
+            <select name="source_language" id="source_language">
+                <option value="en" {% if source_language == "en" %}selected{% endif %}>
+                    English
+                </option>
+                <option value="hi" {% if source_language == "hi" %}selected{% endif %}>
+                    Hindi
+                </option>
+            </select>
+        </div>
+
+        <div class="language-section">
+            <label for="language">Translate To</label>
+
+            <select name="language" id="language">
+                <option value="hi" {% if language == "hi" %}selected{% endif %}>
+                    Hindi
+                </option>
+                <option value="en" {% if language == "en" %}selected{% endif %}>
+                    English
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="translate-btn" id="translate-btn">
+            Translate
+        </button>
+    </form>
+
+    
+
+{% if translated_text %}
+<div class="translation-result">
+
+    <div class="result-header">
+        <div>
+            <h2>Translation Result</h2>
+            <p>Your translated text is ready</p>
+        </div>
+
+        <span class="result-status">✓ Completed</span>
+    </div>
+
+    <div class="translation-language">
+        <span class="language-chip">
+            {% if source_language == "en" %}English{% else %}Hindi{% endif %}
+        </span>
+
+        <span class="language-arrow">→</span>
+
+        <span class="language-chip target-chip">
+            {% if language == "en" %}English{% else %}Hindi{% endif %}
+        </span>
+    </div>
+
+    
+<div class="translated-editor">
+    <textarea
+        id="translated-text"
+        class="translated-textarea"
+        readonly
+    >{{ translated_text }}</textarea>
+
+    <button
+        type="button"
+        id="copy-btn"
+        class="copy-corner-btn"
+    >
+        <span id="copy-icon">▢</span>
+        <span id="copy-label">Copy</span>
+    </button>
+</div>
+
+
+    <p class="offline-note">⚡ Powered by offline translation</p>
+
+</div>
+{% endif %}
+
+
+
+</div>
+
+<script>
+const form = document.getElementById("translate-form");
+const translateBtn = document.getElementById("translate-btn");
+
+form.addEventListener("submit", function (event) {
+    const text = document.getElementById("source-text").value.trim();
+
+    if (!text) {
+        event.preventDefault();
+        alert("Please enter text to translate.");
+        return;
+    }
+
+    translateBtn.disabled = true;
+    translateBtn.textContent = "Translating...";
+});
+
+
+const copyBtn = document.getElementById("copy-btn");
+
+if (copyBtn) {
+    copyBtn.addEventListener("click", async function () {
+        const textarea = document.getElementById("translated-text");
+        const copyLabel = document.getElementById("copy-label");
+        const copyIcon = document.getElementById("copy-icon");
+
+        if (!textarea) {
+            alert("Translated text was not found.");
+            return;
+        }
+
+        try {
+            // Modern clipboard API
+            await navigator.clipboard.writeText(textarea.value);
+        } catch (error) {
+            // Fallback for browsers that block clipboard access
+            textarea.focus();
+            textarea.select();
+            textarea.setSelectionRange(0, textarea.value.length);
+
+            const copied = document.execCommand("copy");
+
+            if (!copied) {
+                alert("Copy failed. Please select the text and copy it manually.");
+                return;
+            }
+        }
+
+        if (copyLabel) copyLabel.textContent = "Copied!";
+        if (copyIcon) copyIcon.textContent = "✓";
+
+        copyBtn.classList.add("copied");
+
+        setTimeout(() => {
+            if (copyLabel) copyLabel.textContent = "Copy";
+            if (copyIcon) copyIcon.textContent = "▢";
+
+            copyBtn.classList.remove("copied");
+        }, 2000);
+    });
+}
+
+</script>
+
+</body>
+</html>

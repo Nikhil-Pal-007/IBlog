@@ -1,0 +1,645 @@
+/* ============================================================
+   Base
+   ============================================================ */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 30px 15px;
+    font-family: 'Inter', Arial, sans-serif;
+    background: #f5f7fb;
+    color: #111;
+}
+
+/* ── Blog Container ──────────────────────────────────────── */
+.blog-container {
+    max-width: 850px;
+    margin: auto;
+    background: #fff;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.08);
+}
+
+/* ── Post Header ─────────────────────────────────────────── */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.author-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.profile-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+
+.author-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.profile-link {
+    text-decoration: none;
+    color: #111827;
+    font-weight: 700;
+    font-size: 16px;
+}
+.profile-link:hover { color: #2563eb; }
+
+.post-meta {
+    display: flex;
+    gap: 6px;
+    color: #6b7280;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.follow-btn {
+    background: #111827;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.25s;
+}
+.follow-btn:hover { background: #374151; transform: scale(1.03); }
+
+/* ── Title ───────────────────────────────────────────────── */
+.blog-title {
+    font-size: 34px;
+    line-height: 1.3;
+    margin-bottom: 25px;
+    color: #111827;
+    font-weight: 800;
+}
+
+/* ── Blog Image ──────────────────────────────────────────── */
+.blog-main-image {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+/* ── Content ─────────────────────────────────────────────── */
+.blog-content {
+    font-size: 17px;
+    line-height: 1.9;
+    color: #374151;
+}
+
+/* ── Stats ───────────────────────────────────────────────── */
+.post-stats {
+    display: flex;
+    gap: 25px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+    font-size: 14px;
+}
+.post-stats span { display: flex; align-items: center; gap: 6px; }
+
+/* ── Action Bar ──────────────────────────────────────────── */
+.post-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.post-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: all .22s ease;
+    position: relative;
+}
+.post-btn:hover { background: #f3f4f6; }
+
+.post-btn.liked  { color: #e11d48; }
+.post-btn.saved  { color: #2563eb; }
+
+/* Heart fill animation */
+.liked-icon { color: #e11d48; }
+.saved-icon { color: #2563eb; }
+
+.like-pop, .save-pop {
+    animation: popIt 0.38s ease;
+}
+@keyframes popIt {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.4); }
+    70%  { transform: scale(.9); }
+    100% { transform: scale(1); }
+}
+
+/* ==========================================================
+   INSTAGRAM COMMENT DRAWER
+========================================================== */
+
+/* Hidden by default */
+.comment-modal{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+
+    display:none;              /* Hidden initially */
+    justify-content:center;
+    align-items:flex-end;
+
+    background:rgba(0,0,0,.45);
+    z-index:9999;
+}
+
+.comment-modal.open{
+    display:flex;
+}
+/* Bottom drawer */
+.comment-box{
+    width:100%;
+    max-width:700px;
+    height:80vh;
+
+    background:#fff;
+    border-radius:24px 24px 0 0;
+
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+
+    transform:translateY(100%);
+    transition:transform .3s ease;
+}
+
+.comment-modal.open .comment-box{
+    transform:translateY(0);
+}
+
+@keyframes slideUp{
+    from{transform:translateY(100%);}
+    to{transform:translateY(0);}
+}
+
+/* Drag handle */
+.drag-handle{
+    width:50px;
+    height:5px;
+    background:#d1d5db;
+    border-radius:999px;
+    margin:10px auto;
+}
+
+/* Header */
+.comment-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px;
+    border-bottom:1px solid #ececec;
+    background:#fff;
+}
+
+.comment-header h3{
+    margin:0;
+    font-size:18px;
+    font-weight:700;
+}
+
+.comment-count-badge{
+    background:#EEF2FF;
+    color:#2563EB;
+    padding:3px 10px;
+    border-radius:999px;
+    font-size:13px;
+}
+
+.close-drawer-btn{
+    border:none;
+    background:#F3F4F6;
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+/* Scrollable comments */
+.comments-container{
+    flex:1;
+    overflow-y:auto;
+    padding:18px;
+    background:#F9FAFB;
+}
+
+/* Comment card */
+.comment-card{
+    display:flex;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.comment-avatar{
+    width:42px;
+    height:42px;
+    min-width:42px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+}
+
+.comment-body{
+    flex:1;
+}
+
+.comment-user{
+    font-weight:700;
+    font-size:14px;
+}
+
+.comment-time{
+    font-size:12px;
+    color:#6B7280;
+    margin-top:2px;
+}
+
+.comment-text{
+    margin:6px 0 10px;
+    color:#374151;
+    line-height:1.5;
+}
+
+.comment-actions{
+    display:flex;
+    gap:18px;
+}
+
+.comment-action{
+    background:none;
+    border:none;
+    color:#6B7280;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+}
+
+.comment-action:hover{
+    color:#2563EB;
+}
+
+/* ================= COMMENT INPUT ================= */
+
+.comment-input-wrapper{
+    border-top:1px solid #ECECEC;
+    background:#fff;
+    padding:14px 16px;
+}
+
+.comment-input-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.input-avatar{
+    width:42px;
+    height:42px;
+    min-width:42px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+}
+
+.comment-input-row input{
+    flex:1;
+    border:none;
+    outline:none;
+    background:#F3F4F6;
+    padding:12px 16px;
+    border-radius:999px;
+    font-size:14px;
+}
+
+.comment-input-row input:focus{
+    background:#fff;
+    border:1px solid #2563EB;
+}
+
+.post-comment-btn{
+    border:none;
+    background:none;
+    color:#2563EB;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.post-comment-btn:disabled{
+    color:#A5B4FC;
+    cursor:not-allowed;
+}
+/* ==========================================================
+   COMMENT 3-DOTS MENU
+========================================================== */
+
+.comment-menu-wrapper{
+    position:relative;
+    margin-left:auto;
+}
+
+/* 3 dots button */
+.menu-btn{
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:18px;
+    padding:5px 8px;
+    color:#6B7280;
+}
+
+.menu-btn:hover{
+    color:#111827;
+}
+
+/* Menu hidden by default */
+.comment-menu{
+    display:none;
+
+    position:absolute;
+    right:0;
+    top:35px;
+
+    min-width:140px;
+
+    background:#fff;
+    border-radius:10px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+    padding:6px 0;
+
+    z-index:10000;
+}
+
+.more-menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.more-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background: white;
+    min-width: 140px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    padding: 6px 0;
+}
+
+.more-dropdown.show {
+    display: block;
+}
+
+.more-option {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    border: none;
+    background: none;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.more-option:hover {
+    background: #f5f5f5;
+}
+.delete-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.delete-modal-overlay.show {
+    display: flex;
+}
+
+.delete-modal {
+    width: 90%;
+    max-width: 420px;
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+.delete-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffe5e5;
+    color: #dc3545;
+    font-size: 24px;
+}
+
+.delete-modal h3 {
+    margin-bottom: 10px;
+}
+
+.delete-modal p {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.delete-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.cancel-delete,
+.confirm-delete {
+    border: none;
+    border-radius: 9px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-delete {
+    background: #f1f3f5;
+    color: #333;
+}
+
+.confirm-delete {
+    background: #dc3545;
+    color: white;
+}
+
+.confirm-delete:hover {
+    background: #bb2d3b;
+}
+.save-message {
+position: fixed;
+bottom: 25px;
+right: 25px;
+
+background: #222;
+color: white;
+
+padding: 10px 15px;
+border-radius: 8px;
+
+font-size: 13px;
+
+display: flex;
+align-items: center;
+gap: 8px;
+
+opacity: 0;
+transform: translateY(10px);
+
+pointer-events: none;
+
+transition: 0.25s ease;
+
+z-index: 9999;
+
+
+}
+
+.save-message.show {
+opacity: 1;
+transform: translateY(0);
+}
+
+.save-message i {
+color: #a99fff;
+}
+
+
+
+.share-card {
+    display: none;
+    position: absolute;
+    width: 260px;
+    max-width: calc(100vw - 30px);
+    box-sizing: border-box;
+    background: white;
+    color: #222;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.18);
+    z-index: 9999;
+    margin-top: 8px;
+}
+
+.share-card.show {
+    display: block;
+}
+
+.share-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 14px;
+}
+
+.share-card-header button {
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.share-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.share-options button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 5px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #f8f9fa;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.share-options button:hover {
+    background: #e9ecef;
+}
+
+.share-options i {
+    font-size: 22px;
+}
+
+.share-options .fa-whatsapp {
+    color: #25D366;
+}
+
+.share-options .fa-envelope {
+    color: #4267B2;
+}
+
+.share-options .fa-link {
+    color: #555;
+}
+
+.share-options .fa-ellipsis {
+    color: #777;
+}
+
+#shareMessage {
+    font-size: 12px;
+    color: green;
+    margin: 10px 0 0;
+}

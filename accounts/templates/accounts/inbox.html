@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox | iBlog</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 30px 15px;
+            background: #f5f6fa;
+            font-family: Arial, sans-serif;
+            color: #26243b;
+        }
+
+        .inbox {
+            max-width: 680px;
+            margin: auto;
+            background: white;
+            border: 1px solid #e7e7ee;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 24px;
+            border-bottom: 1px solid #eeeef3;
+        }
+
+        .header h1 { margin: 0 0 8px; }
+
+        .header p {
+            margin: 0;
+            color: #77768a;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f0f4;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .item:hover { background: #f8f8fc; }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #eee;
+        }
+
+        .details { flex: 1; min-width: 0; }
+
+        .top-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .username { font-weight: bold; }
+
+        .time {
+            font-size: 11px;
+            color: #9291a0;
+            white-space: nowrap;
+        }
+
+        .preview {
+            color: #77768a;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .unread .preview {
+            color: #302e42;
+            font-weight: bold;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #e53965;
+            flex-shrink: 0;
+        }
+
+        .empty {
+            padding: 35px;
+            text-align: center;
+            color: #888;
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 12px 8px; }
+            .item { padding: 14px; }
+            .avatar { width: 44px; height: 44px; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="inbox">
+    <header class="header">
+        <h1>Inbox</h1>
+        <p>Your messages and latest activity on iBlog.</p>
+    </header>
+
+    {% for item in items %}
+
+        {% if item.type == "conversation" %}
+
+            <a class="item {% if item.unread_count %}unread{% endif %}"
+               href="{% url 'chat' item.user.username %}">
+
+                {% if item.user.profile.profile_image %}
+                    <img class="avatar"
+                         src="{{ item.user.profile.profile_image.url }}"
+                         alt="">
+                {% else %}
+                    <div class="avatar"></div>
+                {% endif %}
+
+                <div class="details">
+                    <div class="top-line">
+                        <span class="username">
+                            {{ item.user.username }}
+                        </span>
+                        <span class="time">
+                            {{ item.last_message.timestamp|date:"g:i A" }}
+                        </span>
+                    </div>
+
+                    <div class="preview">
+                        {% if item.unread_count %}
+                            You have a new message:
+                        {% elif item.last_message.sender_id == request.user.id %}
+                            You:
+                        {% endif %}
+                        {{ item.last_message.content|truncatechars:55 }}
+                    </div>
+                </div>
+
+                {% if item.unread_count %}
+                    <span class="dot"></span>
+                {% endif %}
+            </a>
+
+        {% else %}
+
+            <a class="item {% if not item.notification.is_read %}unread{% endif %}"
+               href="{{ item.notification.target_url|default:'/notifications/' }}">
+
+                {% if item.notification.actor.profile.profile_image %}
+                    <img class="avatar"
+                         src="{{ item.notification.actor.profile.profile_image.url }}"
+                         alt="">
+                {% else %}
+                    <div class="avatar"></div>
+                {% endif %}
+
+                <div class="details">
+                    <div class="top-line">
+                        <span class="username">
+                            {{ item.notification.actor.username }}
+                        </span>
+                        <span class="time">
+                            {{ item.notification.created_at|date:"g:i A" }}
+                        </span>
+                    </div>
+
+                    <div class="preview">
+                        {% if item.notification.notification_type == "follow" %}
+                            New follower —
+                        {% elif item.notification.notification_type == "comment" %}
+                            New comment —
+                        {% elif item.notification.notification_type == "reply" %}
+                            New reply —
+                        {% endif %}
+                        {{ item.notification.message }}
+                    </div>
+                </div>
+
+                {% if not item.notification.is_read %}
+                    <span class="dot"></span>
+                {% endif %}
+            </a>
+
+        {% endif %}
+
+    {% empty %}
+        <div class="empty">No messages or activity yet.</div>
+    {% endfor %}
+</div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="{% static 'accounts/edit_profile.css' %}">
+</head>
+<body>
+
+<div class="edit-wrapper">
+    <div class="edit-card">
+        <h2>Edit Profile</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="profile-top">
+                <img src="{{ user.profile.profile_image.url }}" alt="Profile" class="profile-image">
+
+                <div class="profile-info">
+                    <h3>{{ user.username }}</h3>
+                    <label for="id_profile_image" class="change-photo">Change profile photo</label>
+                    {{ p_form.profile_image }}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label>Username</label>
+                {{ u_form.username }}
+            </div>
+
+            <div class="form-row">
+                <label>Bio</label>
+                {{ p_form.bio }}
+            </div>
+
+            <div class="form-row">
+                <label>Gender</label>
+                {{ p_form.gender }}
+            </div>
+
+            <button type="submit" class="save-btn">Submit</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Navbar</title>
+    <link rel="stylesheet" href="{% static 'accounts/home.css' %}">
+</head>
+
+<body>
+    <div id="top"></div>
+    {% if messages %}
+
+    <div class="message-container">
+
+        {% for message in messages %}
+
+        <div class="message {{ message.tags }}">
+
+            <span>
+                {{ message }}
+            </span>
+
+            <button class="close-btn">
+                ×
+            </button>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+    <header>
+
+        <nav class="nav-bar">
+
+            <!-- Logo -->
+            <a href="#top" class="nav-brand">
+                <img src="{% static 'accounts/logo.jpeg' %}" class="logo" alt="iBlog logo">
+            </a>
+
+            <!-- Left navigation -->
+            <div class="nav-left" id="navMenu">
+                <ul>
+                    <li><a href="#top">Home</a></li>
+                    <li><a href="#category">Categories</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+
+                    <li class="search-container">
+                        <button type="button" id="openSearch" class="open-search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Search creators or blogs...</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Right navigation -->
+            <div class="nav-right" id="navActions">
+
+                <a href="{% url 'saved_blogs' %}" class="saved-link">
+                    <i class="fa-solid fa-bookmark"></i>
+                    <span>Saved</span>
+                </a>
+
+                <a href="{% url 'ai_dashboard' %}" class="btn ai-btn">
+                    AI Tools
+                </a>
+
+                <a href="{% url 'write_blog' %}" class="btn write-btn">
+                    Write Blog
+                </a>
+
+                <a href="{% url 'inbox' %}" class="message-link" aria-label="Notifications and messages">
+                    <img src="{% static 'accounts/notification-bell.png' %}" alt="Notifications">
+
+                    {% if unread_count > 0 %}
+                    <span class="badge">{{ unread_count }}</span>
+                    {% endif %}
+                </a>
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'profile_view' user.username %}" class="nav-profile-link">
+                    <div class="nav-profile-circle">
+                        <img src="{{ user.profile.profile_image.url }}?v={{ user.profile.profile_image.name }}"
+                            alt="Profile" class="nav-profile-img"
+                            onerror="this.onerror=null; this.src='/media/profile_pics/default.jpg';">
+                    </div>
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}" class="nav-profile-link">
+                    <div class="nav-profile-circle">
+                        <img src="/media/profile_pics/default.jpg" alt="Default Profile" class="nav-profile-img">
+                    </div>
+                </a>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </form>
+                {% endif %}
+
+            </div>
+
+            <!-- Hamburger menu: visible on mobile and tablet -->
+            <button type="button" class="menu-toggle" id="menuToggle" aria-label="Toggle navigation"
+                aria-controls="navMenu navActions" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </nav>
+
+    </header>
+    <main>
+        <!-- Intro Section -->
+        <div class="intro">
+            <h1>Welcome to Indian Blog</h1>
+            <h4>“Your Mood. Your Stories. Powered by AI.”</h4>
+            <p>
+                This Indian blog supports multiple topics. Users can select their mood,
+                and blogs are displayed accordingly. It also offers AI features,
+                available through interactive cards.
+            </p>
+        </div>
+        <div class="features-container">
+
+            <h2 class="features-heading"><span>🚀</span>Features of IBlog</h2>
+            <p>See all the newest feature in this 'Features of IBlog'</p>
+
+            <div class="features-slider">
+
+                <div class="feature-card">
+                    <img src="https://thirdeyedata.ai/wp-content/uploads/2023/07/summarize-icon-9.png"
+                        class="blog-image">
+                    <div class="blog-content">
+                        <h3>AI Summarization</h3>
+                        <p>AI summarization is a tool that takes a long text and turns it into a short, easy version
+                            while keeping the main meaning.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://tse1.mm.bing.net/th/id/OIP.fDWStVHeO8UJdNjzma0CxQHaEK?pid=Api&P=0&h=180"
+                        class="blog-image">
+                    <div class="blog-content">
+                        <h3>Language Translation</h3>
+                        <p>AI translation is a tool that converts text from one language to another while keeping the
+                            same meaning.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20240123110132/10-Free-Text-to-Speech-Generator-with-Realistic-AI-Voices.webp"
+                        class="blog-image">
+                    <div class="blog-content">
+                        <h3>Text-To-Speech</h3>
+                        <p>Text-to-Speech (TTS) is a technology that converts written text into spoken voice output.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <img src="https://img.freepik.com/premium-vector/mood-meter-gauge-with-arrow-different-emotional-faces-from-happy-angry-emotions-chart_254622-1590.jpg?w=740"
+                        class="blog-image">
+                    <div class="blog-content">
+                        <h3>Mood Selection</h3>
+                        <p>Not sure what to read? Let your mood decide. Find content that connects with your emotions
+                            instantly.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <section id="latest" class="latest-container">
+
+            <div class="latest-header">
+                <h2><span>📰</span>Latest Blogs</h2>
+                <p>See the newest posts and stay updated.</p>
+            </div>
+
+
+            <!-- SLIDER WRAPPER -->
+            <div class="slider-wrapper">
+                <div class="latest-blog-slider">
+
+                    {% for blog in blogs %}
+                    <div class="blog-card">
+
+                        <a href="{% url 'profile_view' blog.user.username %}" class="profile-link">
+
+                            <div class="post-header">
+                                <img src="{{ blog.user.profile.profile_image.url }}" class="profile"
+                                    onerror="this.onerror=null; this.src='/media/profile_pics/default.jpg';">
+                                <span class="username">{{ blog.user.username }}</span>
+                            </div>
+
+                        </a>
+
+                        {% if blog.image %}
+                        <div class="post-image">
+                            <img src="{{ blog.image.url }}" alt="Blog Image">
+                        </div>
+                        {% endif %}
+
+                        <div class="post-desc">
+                            <h3>{{ blog.title }}</h3>
+                            <p>{{ blog.content|truncatewords:25 }}</p>
+                            <a href="{% url 'blog_detail' blog.id %}" target="_blank" class="read-more-btn">
+                                Read More
+                            </a>
+                        </div>
+
+                    </div>
+                    {% empty %}
+                    <p>No blogs posted yet.</p>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+
+        </section>
+
+        <section id="category" class="categories-section">
+
+            <h2><span>📚</span>Categories</h2>
+
+            <p>
+                Categories are groups that organize blogs based on topics or themes.
+                They help users easily find content related to their interests.
+            </p>
+
+            <div class="categories-container">
+
+
+                <a href="{% url 'category_blogs' 'Technology' %}" class="category-card">
+                    <h2><span>💻</span>Technology</h2>
+
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dGVjaG5vbG9neSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D"
+                        alt="Technology">
+                </a>
+
+                <a href="{% url 'category_blogs' 'Travel' %}" class="category-card">
+                    <h2><span>🌍</span>Travel & Tourism</h2>
+
+                    <img src="https://images.unsplash.com/photo-1619467416348-6a782839e95f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHRyYXZlbCUyMGFuZCUyMHRvdXJpc218ZW58MHx8MHx8fDA%3D"
+                        alt="Travel">
+                </a>
+
+                <a href="{% url 'category_blogs' 'Food' %}" class="category-card">
+                    <h2><span>🍔</span>Food & Recipes</h2>
+
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZCUyMGFuZCUyMHJlY2VwaWVzfGVufDB8fDB8fHww"
+                        alt="Food">
+                </a>
+
+                <a href="{% url 'category_blogs' 'Entertainment' %}" class="category-card">
+                    <h2><span>🎬</span>Entertainment</h2>
+                    <img src="https://plus.unsplash.com/premium_photo-1710961232986-36cead00da3c?q=80&w=784&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        alt="Entertainment">
+                </a>
+
+                <a href="{% url 'category_blogs' 'Fitness' %}" class="category-card">
+                    <h2><span>🏋️</span>Fitness and Health</h2>
+                    <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZpdG5lc3N8ZW58MHx8MHx8fDA%3D"
+                        alt="Fitness">
+                </a>
+                <a href="{% url 'category_blogs' 'Photography' %}" class="category-card">
+                    <h2><span>📸</span>Photography</h2>
+                    <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cGhvdG9ncmFwaHl8ZW58MHx8MHx8fDA%3D"
+                        alt="Photography">
+                </a>
+                <a href="{% url 'category_blogs' 'Nature' %}" class="category-card">
+                    <h2><span>🌱</span>Nature</h2>
+                    <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bmF0dXJlfGVufDB8fDB8fHww"
+                        alt="Nature">
+                </a>
+                <a href="{% url 'category_blogs' 'PersonalStories' %}" class="category-card">
+                    <h2><span>❤️</span>Personal Stories</h2>
+                    <img src="https://media.istockphoto.com/id/859761378/photo/text-everyone-has-a-story-typed-on-retro-typewriter.webp?a=1&b=1&s=612x612&w=0&k=20&c=3GewVwIquiuzICQOhZ24PSb05yqQeadV2zg9lLCos6Q="
+                        alt="PersonalStories">
+                </a>
+                <a href="{% url 'category_blogs' 'Sports' %}" class="category-card">
+                    <h2><span>🏏</span>Sports</h2>
+                    <img src="https://plus.unsplash.com/premium_vector-1720251544140-acf102118884?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fHw%3D"
+                        alt="Sports">
+                </a>
+                <a href="{% url 'category_blogs' 'SelfImprovement' %}" class="category-card">
+                    <h2><span>📈</span>Self Improvement</h2>
+                    <img src="https://plus.unsplash.com/premium_photo-1700675175397-7cc710d56e11?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c2VsZiUyMGltcHJvdmVtZW50fGVufDB8fDB8fHww"
+                        alt="Self Improvement">
+                </a>
+
+
+            </div>
+
+        </section>
+        <section id="trending" class="trending-section">
+
+            <div class="trending-header">
+                <h2>🔥 Trending Blogs</h2>
+                <p>Most viewed and popular blogs on the platform.</p>
+            </div>
+
+            <div class="trending-wrapper">
+
+                <div class="trending-container">
+
+                    {% for blog in trending_blogs %}
+
+                    <div class="trending-card">
+
+                        <div class="trending-badge">
+                            🔥 Trending
+                        </div>
+
+                        {% if blog.image %}
+                        <div class="trending-image">
+                            <img src="{{ blog.image.url }}" alt="Blog Image">
+                        </div>
+                        {% endif %}
+
+                        <div class="trending-content">
+
+                            <h3>{{ blog.title }}</h3>
+
+                            <p>
+                                {{ blog.content|truncatewords:20 }}
+                            </p>
+
+                            <div class="trending-info">
+                                👁 {{ blog.views }} Views
+                            </div>
+
+                            <a href="{% url 'blog_detail' blog.id %}" class="trend-btn">
+
+                                Read More
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    {% empty %}
+
+                    <p>No trending blogs available.</p>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="creators-section">
+
+            <h2><span>🌟</span>Top Creators</h2>
+
+            <div class="creators-container">
+
+                {% for creator in top_creators %}
+
+                <div class="creator-card">
+
+                    <img src="{{ creator.profile.profile_image.url }}">
+
+                    <h3>{{ creator.username }}</h3>
+
+                    <div class="creator-bio">
+                        {{ creator.profile.bio|linebreaks }}
+                    </div>
+
+                    <span>{{ creator.blog_count }} Blogs</span>
+
+                    <a href="{% url 'profile_view' creator.username %}">
+                        View Profile
+                    </a>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        <section class="newsletter-section">
+
+            <div class="newsletter-content">
+
+                <h2>
+                    📧 Stay Updated With New Blogs
+                </h2>
+
+                <p>
+                    Get latest technology, travel, food,
+                    and creator blogs directly in your inbox.
+                </p>
+
+                <form class="newsletter-form" method="POST" action="{% url 'subscribe_newsletter' %}">
+
+                    {% csrf_token %}
+
+                    <input type="email" name="email" placeholder="Enter your email" required>
+
+                    <button type="submit">
+                        Subscribe
+                    </button>
+
+                </form>
+
+                <span class="newsletter-text">
+                    🔥 Join thousands of blog readers
+                </span>
+
+            </div>
+
+        </section>
+    </main>
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <!-- BRAND -->
+            <div class="footer-box">
+
+                <h2>IBlog</h2>
+
+                <p>
+                    Share your ideas, explore blogs,
+                    and connect with creators around the world.
+                </p>
+
+            </div>
+
+            <!-- QUICK LINKS -->
+            <div class="footer-box">
+
+                <h3>Quick Links</h3>
+
+                <ul>
+
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    <li>
+                        <a href="#latest">Latest Blogs</a>
+                    </li>
+
+                    <li>
+                        <a href="#trending">Trending</a>
+                    </li>
+
+                    <li>
+                        <a href="#category">Categories</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- CATEGORIES -->
+            <div class="footer-box">
+
+                <h3>Categories</h3>
+
+                <ul>
+
+                    <li>💻 Technology</li>
+
+                    <li>✈️ Travel</li>
+
+                    <li>🍔 Food</li>
+
+                    <li>🎮 Gaming</li>
+
+                    <li>🏋️ Fitness</li>
+
+                </ul>
+
+            </div>
+
+            <!-- SOCIAL -->
+            <div class="footer-box">
+
+                <h3>Follow Us</h3>
+
+                <div class="social-links">
+
+                    <a href="#">🌐</a>
+
+                    <a href="#">📘</a>
+
+                    <a href="#">📸</a>
+
+                    <a href="#">🐦</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BOTTOM -->
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 IBlog. All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // =====================================
+            // 1. GET HTML ELEMENTS
+            // =====================================
+            const searchModal = document.getElementById("searchModal");
+            const openSearch = document.getElementById("openSearch");
+            const closeSearch = document.getElementById("closeSearch");
+            const closeSearchOverlay = document.getElementById("closeSearchOverlay");
+
+            const searchInput = document.getElementById("searchInput");
+            const resultsBox = document.getElementById("searchResults");
+            const clearSearch = document.getElementById("clearSearch");
+
+            // Stop safely if essential elements are missing
+            if (
+                !searchModal ||
+                !openSearch ||
+                !closeSearch ||
+                !closeSearchOverlay ||
+                !searchInput ||
+                !resultsBox
+            ) {
+                console.error(
+                    "Search error: Check the IDs of your search modal HTML elements."
+                );
+                return;
+            }
+
+            let searchTimeout = null;
+            let activeController = null;
+
+            // =====================================
+            // 2. ESCAPE HTML FOR SAFE DISPLAY
+            // =====================================
+            function escapeHTML(value) {
+                return String(value ?? "").replace(/[&<>"']/g, function (char) {
+                    const entities = {
+                        "&": "&amp;",
+                        "<": "&lt;",
+                        ">": "&gt;",
+                        '"': "&quot;",
+                        "'": "&#039;"
+                    };
+                    return entities[char];
+                });
+            }
+
+            // =====================================
+            // 3. OPEN SEARCH MODAL
+            // =====================================
+            function openSearchModal() {
+                searchModal.classList.add("active");
+                document.body.style.overflow = "hidden";
+
+                setTimeout(function () {
+                    searchInput.focus();
+                }, 100);
+            }
+
+            // =====================================
+            // 4. CLOSE SEARCH MODAL
+            // =====================================
+            function closeSearchModal() {
+                searchModal.classList.remove("active");
+                document.body.style.overflow = "";
+
+                // Stop any pending search
+                clearTimeout(searchTimeout);
+
+                if (activeController) {
+                    activeController.abort();
+                    activeController = null;
+                }
+
+                // Reset search
+                searchInput.value = "";
+                resultsBox.innerHTML = "";
+                resultsBox.style.display = "none";
+
+                if (clearSearch) {
+                    clearSearch.style.display = "none";
+                }
+            }
+
+            openSearch.addEventListener("click", openSearchModal);
+            closeSearch.addEventListener("click", closeSearchModal);
+            closeSearchOverlay.addEventListener("click", closeSearchModal);
+
+            // =====================================
+            // 5. CLOSE WITH ESCAPE KEY
+            // =====================================
+            document.addEventListener("keydown", function (event) {
+                if (
+                    event.key === "Escape" &&
+                    searchModal.classList.contains("active")
+                ) {
+                    closeSearchModal();
+                }
+            });
+
+            // =====================================
+            // 6. SHOW SEARCH RESULTS CONTAINER
+            // =====================================
+            function showDropdown() {
+                resultsBox.style.display = "block";
+                resultsBox.classList.add("show");
+            }
+
+            function hideDropdown() {
+                resultsBox.style.display = "none";
+                resultsBox.classList.remove("show");
+            }
+
+            // =====================================
+            // 7. CLEAR BUTTON VISIBILITY
+            // =====================================
+            function updateClearButton() {
+                if (!clearSearch) return;
+
+                clearSearch.style.display =
+                    searchInput.value.trim() ? "block" : "none";
+            }
+
+            if (clearSearch) {
+                clearSearch.addEventListener("click", function () {
+                    searchInput.value = "";
+                    searchInput.focus();
+                    updateClearButton();
+                    hideDropdown();
+
+                    clearTimeout(searchTimeout);
+
+                    if (activeController) {
+                        activeController.abort();
+                        activeController = null;
+                    }
+
+                    resultsBox.innerHTML = "";
+                });
+            }
+
+            // =====================================
+            // 8. CREATE SECTION HEADING
+            // =====================================
+            function createHeading(title) {
+                const heading = document.createElement("div");
+                heading.className = "search-section-heading";
+                heading.textContent = title;
+                resultsBox.appendChild(heading);
+            }
+
+            // =====================================
+            // 9. CREATE A SEARCH RESULT
+            // =====================================
+            function createResult(title, subtitle, url, image = null) {
+                const link = document.createElement("a");
+
+                link.className = "search-result-item";
+                link.href = url || "#";
+
+                if (image) {
+                    const img = document.createElement("img");
+                    img.className = "search-result-image";
+                    img.src = image;
+                    img.alt = "";
+                    img.loading = "lazy";
+
+                    img.onerror = function () {
+                        img.style.display = "none";
+                    };
+
+                    link.appendChild(img);
+                }
+
+                const content = document.createElement("div");
+                content.className = "search-result-content";
+
+                const titleElement = document.createElement("div");
+                titleElement.className = "search-result-title";
+                titleElement.textContent = title || "";
+
+                content.appendChild(titleElement);
+
+                if (subtitle) {
+                    const subtitleElement = document.createElement("div");
+                    subtitleElement.className = "search-result-subtitle";
+                    subtitleElement.textContent = subtitle;
+                    content.appendChild(subtitleElement);
+                }
+
+                link.appendChild(content);
+                resultsBox.appendChild(link);
+            }
+
+            // =====================================
+            // 10. DISPLAY LIVE SEARCH RESULTS
+            // =====================================
+            async function performSearch(query) {
+                if (!query) {
+                    hideDropdown();
+                    resultsBox.innerHTML = "";
+                    return;
+                }
+
+                // Cancel the previous request
+                if (activeController) {
+                    activeController.abort();
+                }
+
+                activeController = new AbortController();
+
+                resultsBox.innerHTML = `
+            <div class="search-message">Searching...</div>
+        `;
+
+                showDropdown();
+
+                try {
+                    const response = await fetch(
+                        `/search/?q=${encodeURIComponent(query)}`,
+                        {
+                            method: "GET",
+                            headers: {
+                                "X-Requested-With": "XMLHttpRequest",
+                                "Accept": "application/json"
+                            },
+                            signal: activeController.signal
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(`Search request failed: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    // Don't show outdated results
+                    if (searchInput.value.trim() !== query) return;
+
+                    resultsBox.innerHTML = "";
+
+                    const users = Array.isArray(data.users) ? data.users : [];
+                    const blogs = Array.isArray(data.blogs) ? data.blogs : [];
+                    const categories = Array.isArray(data.categories)
+                        ? data.categories
+                        : [];
+
+                    // Creators
+                    if (users.length > 0) {
+                        createHeading("Creators");
+
+                        users.forEach(function (user) {
+                            createResult(
+                                user.username || user.name || "Creator",
+                                "View profile",
+                                user.url || user.profile_url || `/profile/${encodeURIComponent(user.username)}/`,
+                                user.image || user.profile_image || null
+                            );
+                        });
+                    }
+
+                    // Blog posts
+                    if (blogs.length > 0) {
+                        createHeading("Blogs");
+
+                        blogs.forEach(function (blog) {
+                            createResult(
+                                blog.title || "Untitled blog",
+                                blog.username ? "By " + blog.username : "Blog post",
+                                blog.url || blog.blog_url || `/blog/${blog.id}/`,
+                                blog.image || blog.image_url || null
+                            );
+                        });
+                    }
+
+                    // Categories
+                    if (categories.length > 0) {
+                        createHeading("Categories");
+
+                        categories.forEach(function (category) {
+                            const name =
+                                typeof category === "string"
+                                    ? category
+                                    : category.name || category.title || "";
+
+                            const url =
+                                typeof category === "object"
+                                    ? category.url || category.category_url || `/category/${encodeURIComponent(category.name || category.title)}/`
+                                    : `/search/?category=${encodeURIComponent(name)}`;
+
+                            createResult(name, "Category", url);
+                        });
+                    }
+
+                    // No results
+                    if (
+                        users.length === 0 &&
+                        blogs.length === 0 &&
+                        categories.length === 0
+                    ) {
+                        resultsBox.innerHTML = `
+                    <div class="search-message">
+                        No results found for "${escapeHTML(query)}"
+                    </div>
+                `;
+                    }
+
+                    showDropdown();
+
+                } catch (error) {
+                    if (error.name === "AbortError") return;
+
+                    console.error("Live search error:", error);
+
+                    resultsBox.innerHTML = `
+                <div class="search-message">
+                    Unable to load results. Please try again.
+                </div>
+            `;
+
+                    showDropdown();
+                }
+            }
+
+            // =====================================
+            // 11. SEARCH WHILE TYPING
+            // =====================================
+            searchInput.addEventListener("input", function () {
+                const query = searchInput.value.trim();
+
+                updateClearButton();
+                clearTimeout(searchTimeout);
+
+                if (activeController) {
+                    activeController.abort();
+                    activeController = null;
+                }
+
+                if (!query) {
+                    resultsBox.innerHTML = "";
+                    hideDropdown();
+                    return;
+                }
+
+                searchTimeout = setTimeout(function () {
+                    performSearch(query);
+                }, 300);
+            });
+
+            // =====================================
+            // 12. REOPEN RESULTS WHEN INPUT FOCUSES
+            // =====================================
+            searchInput.addEventListener("focus", function () {
+                if (searchInput.value.trim() && resultsBox.innerHTML.trim()) {
+                    showDropdown();
+                }
+            });
+        });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("menuToggle");
+    const leftMenu = document.getElementById("navMenu");
+    const rightMenu = document.getElementById("navActions");
+
+    if (!toggle || !leftMenu || !rightMenu) return;
+
+    function closeMenu() {
+        toggle.setAttribute("aria-expanded", "false");
+        leftMenu.classList.remove("open");
+        rightMenu.classList.remove("open");
+    }
+
+    toggle.addEventListener("click", function () {
+        const isOpen =
+            toggle.getAttribute("aria-expanded") === "true";
+
+        if (isOpen) {
+            closeMenu();
+        } else {
+            toggle.setAttribute("aria-expanded", "true");
+            leftMenu.classList.add("open");
+            rightMenu.classList.add("open");
+        }
+    });
+
+    // Close after selecting a navigation link.
+    document.querySelectorAll(
+        "#navMenu a, #navActions a"
+    ).forEach(function (link) {
+        link.addEventListener("click", closeMenu);
+    });
+
+    // Escape key closes the mobile menu.
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeMenu();
+        }
+    });
+
+    // Reset when switching back to desktop.
+    window.addEventListener("resize", function () {
+        if (window.innerWidth > 1100) {
+            closeMenu();
+        }
+    });
+});
+
+
+    </script>
+
+
+    <div id="searchModal" class="search-modal">
+        <div class="search-overlay" id="closeSearchOverlay"></div>
+
+        <div class="search-card">
+            <div class="search-card-header">
+                <div>
+                    <h3>Search iBlog</h3>
+                    <p>Discover creators, stories and categories</p>
+                </div>
+
+                <button type="button" id="closeSearch" class="close-search">
+                    &times;
+                </button>
+            </div>
+
+            <div class="modal-search-input">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search anything..." autocomplete="off">
+            </div>
+
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Register - iBlog</title>
+    <link rel="stylesheet" href="{% static 'accounts/register.css' %}">
+</head>
+<body>
+
+<div class="container">
+    <div class="form-box">
+        <h2>Create Account</h2>
+
+        {% if messages %}
+            <div class="message-box">
+                {% for message in messages %}
+                    <p class="error-message">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            
+            <button type="submit">Register</button>
+        </form>
+
+        <p>
+            Already have an account? 
+            <a href="{% url 'login' %}">Login</a>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

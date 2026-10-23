@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'ai_tools/dashboard.css' %}">
+</head>
+
+<body>
+
+    <section class="ai-tools-section">
+
+        <h1 class="title">🤖 AI TOOLS</h1>
+        <p class="subtitle">
+            Enhance your blogging experience with intelligent tools.
+        </p>
+
+        <div class="tools-grid">
+
+            <div class="tool-card">
+                <div class="icon">📝</div>
+                <h2>Summarizer</h2>
+                <p>Generate concise summaries from long blog posts.</p>
+
+                <a href="{% url 'summarizer' %}" class="btn">
+                    Open Tool
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <div class="icon">🌍</div>
+                <h2>Translator</h2>
+                <p>Translate content into multiple languages.</p>
+                <a href="{% url 'translator' %}" class="btn">Open Tool</a>
+            </div>
+
+            <div class="tool-card">
+                <div class="icon">🎤</div>
+                <h2>Text To Voice</h2>
+                <p>Convert articles and blogs into audio.</p>
+                <a href="{% url 'text_to_speech' %}" class="btn">Open Tool</a>
+            </div>
+
+            <div class="tool-card">
+                <div class="icon">😊</div>
+                <h2>Mood Selector</h2>
+                <p>Discover blogs that match your current mood.</p>
+                <a href="{% url 'mood_selector' %}" class="btn">Open Tool</a>
+            </div>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>

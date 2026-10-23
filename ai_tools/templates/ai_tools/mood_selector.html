@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Mood Selector</title>
+
+    <link rel="stylesheet" href="{% static 'ai_tools/mood_selector.css' %}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header-row">
+
+            <div class="nav-buttons">
+
+                <a href="{% url 'home' %}" class="home-btn">
+
+                    ← Home
+
+                </a>
+
+                <a href="javascript:history.back()" class="previous-btn">
+
+                    ← Previous
+
+                </a>
+
+            </div>
+
+            <h1>
+                😊 Mood Selector
+            </h1>
+
+        </div>
+
+        <p class="subtitle">
+
+            Select your mood and discover blogs that match it.
+
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="mood-grid">
+
+                <button type="submit" name="mood" value="happy" class="mood-card">
+
+                    😊 Happy
+
+                </button>
+
+                <button type="submit" name="mood" value="motivated" class="mood-card">
+
+                    🔥 Motivated
+
+                </button>
+
+                <button type="submit" name="mood" value="curious" class="mood-card">
+
+                    🤔 Curious
+
+                </button>
+
+                <button type="submit" name="mood" value="relaxed" class="mood-card">
+
+                    😌 Relaxed
+
+                </button>
+
+                <button type="submit" name="mood" value="bored" class="mood-card">
+
+                    😴 Bored
+
+                </button>
+
+                <button type="submit" name="mood" value="stressed" class="mood-card">
+
+                    😓 Stressed
+
+                </button>
+
+            </div>
+
+        </form>
+        {% if selected_mood %}
+
+        <div class="selected-mood">
+
+            <h2>
+                Selected Mood:
+                {{ selected_mood|title }}
+            </h2>
+            {% if recommended_blogs %}
+
+            <div class="blogs-section">
+
+                <h2>
+                    Recommended Blogs
+                </h2>
+
+                <div class="blog-grid">
+
+                    {% for blog in recommended_blogs %}
+
+                    <div class="blog-card">
+
+                        <h3>{{ blog.title }}</h3>
+
+                        <div class="blog-meta">
+
+                            <a href="{% url 'profile_view' blog.user.username %}" class="author">
+
+                                👤 {{ blog.user.username }}
+
+                            </a>
+
+                            <span class="date">
+                                📅 {{ blog.created_at|date:"d M Y" }}
+                            </span>
+
+                        </div>
+
+                        <p>
+                            {{ blog.content|truncatewords:25 }}
+                        </p>
+
+                        <a href="{% url 'blog_detail' blog.id %}" class="read-btn">
+
+                            Read Blog →
+                        </a>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iBlog Newsletter</title>
+</head>
+
+<body style="margin:0; padding:20px; background:#f4f4f4;
+             font-family:Arial,sans-serif;">
+
+    <div style="max-width:600px; margin:auto; padding:25px;
+                background:#ffffff; border-radius:10px;">
+
+        <h1 style="text-align:center; color:#2563eb;">
+            iBlog Newsletter
+        </h1>
+
+        <p style="text-align:center; color:#555;">
+            Discover the latest stories from our community.
+        </p>
+
+        <hr>
+
+        {% for blog in blogs %}
+        <div style="padding:15px 0; border-bottom:1px solid #ddd;">
+
+            <h2 style="color:#222; font-size:20px;">
+                {{ blog.title }}
+            </h2>
+
+            <p style="color:#666;">
+                {{ blog.content|truncatewords:25 }}
+            </p>
+
+            <a href="{{ site_url }}{% url 'blog_detail' blog_id=blog.id %}"
+               style="display:inline-block; padding:10px 18px;
+                      background:#2563eb; color:#ffffff;
+                      text-decoration:none; border-radius:5px;">
+                Read Blog
+            </a>
+
+        </div>
+        {% empty %}
+        <p>No blogs are available yet.</p>
+        {% endfor %}
+
+        <p style="margin-top:25px; text-align:center;
+                  color:#777; font-size:12px;">
+            Thanks for being part of iBlog!
+        </p>
+
+    </div>
+
+</body>
+</html>

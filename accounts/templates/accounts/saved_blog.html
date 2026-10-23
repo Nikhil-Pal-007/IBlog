@@ -1,0 +1,329 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Saved Blogs | IBlog</title>
+
+<link rel="stylesheet"
+      href="{% static 'accounts/saved_blogs.css' %}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+</head>
+
+<body>
+
+<div class="saved-page">
+
+<!-- Background decoration -->
+<div class="bg-circle circle-one"></div>
+<div class="bg-circle circle-two"></div>
+
+
+<!-- Main Container -->
+<div class="saved-container">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="saved-header">
+
+        <div class="header-left">
+
+            <a href="{% url 'home' %}" class="back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+
+            <div class="header-icon">
+                <i class="fa-solid fa-bookmark"></i>
+            </div>
+
+            <div class="header-text">
+
+                <h1>Saved Blogs</h1>
+
+                <p>
+                    Your personal collection of stories
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if blogs %}
+
+            <div class="saved-count">
+
+                <i class="fa-solid fa-bookmark"></i>
+
+                <span>
+                    {{ blogs|length }}
+                </span>
+
+                <small>
+                    Saved
+                </small>
+
+            </div>
+
+        {% endif %}
+
+    </header>
+
+
+
+    <!-- ================= CONTENT ================= -->
+
+    {% if blogs %}
+
+        <div class="saved-intro">
+
+            <div>
+
+                <h2>
+                    Read it whenever you're ready.
+                </h2>
+
+                <p>
+                    Keep your favorite blogs here so you can
+                    easily come back to them later.
+                </p>
+
+            </div>
+
+            <a href="{% url 'home' %}" class="explore-top-btn">
+
+                <i class="fa-solid fa-compass"></i>
+
+                Explore Blogs
+
+            </a>
+
+        </div>
+
+
+
+        <!-- ================= BLOG GRID ================= -->
+
+        <div class="saved-blog-grid">
+
+            {% for blog in blogs %}
+
+                <article class="saved-blog-card">
+
+
+                    <!-- Blog Image -->
+
+                    <div class="blog-image-wrapper">
+
+                        {% if blog.image %}
+
+                            <img
+                                src="{{ blog.image.url }}"
+                                alt="{{ blog.title }}"
+                                class="saved-blog-image">
+
+                        {% else %}
+
+                            <div class="no-image">
+
+                                <i class="fa-regular fa-image"></i>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- Saved Badge -->
+
+                        <div class="saved-badge">
+
+                            <i class="fa-solid fa-bookmark"></i>
+
+                        </div>
+
+
+                        <!-- Category -->
+
+                        <span class="blog-category">
+
+                            {{ blog.category }}
+
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- Blog Content -->
+
+                    <div class="saved-blog-content">
+
+
+                        <h2 class="blog-title">
+
+                            {{ blog.title }}
+
+                        </h2>
+
+
+                        <p class="blog-excerpt">
+
+                            {{ blog.content|truncatewords:25 }}
+
+                        </p>
+
+
+
+                        <!-- Author -->
+
+                        <div class="blog-meta">
+
+                            <div class="author">
+
+                                {% if blog.user.profile.profile_image %}
+
+                                    <img
+                                        src="{{ blog.user.profile.profile_image.url }}"
+                                        alt="{{ blog.user.username }}">
+
+                                {% else %}
+
+                                    <div class="author-placeholder">
+
+                                        <i class="fa-solid fa-user"></i>
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                <div class="author-info">
+
+                                    <span class="author-name">
+
+                                        {{ blog.user.username }}
+
+                                    </span>
+
+                                    <span class="saved-label">
+
+                                        Saved blog
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <span class="blog-date">
+
+                                <i class="fa-regular fa-clock"></i>
+
+                                {{ blog.created_at|date:"M d, Y" }}
+
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- Read Button -->
+
+                        <a href="{% url 'blog_detail' blog.id %}"
+                           class="read-btn">
+
+                            <span>
+                                Read Blog
+                            </span>
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- ================= EMPTY STATE ================= -->
+
+        <div class="empty-saved">
+
+
+            <div class="empty-bookmark">
+
+                <div class="empty-icon">
+
+                    <i class="fa-regular fa-bookmark"></i>
+
+                </div>
+
+                <span class="spark spark-one">✦</span>
+                <span class="spark spark-two">✦</span>
+                <span class="spark spark-three">✧</span>
+
+            </div>
+
+
+            <h2>
+                Nothing saved yet
+            </h2>
+
+
+            <p>
+
+                Found a blog you love?
+
+                <br>
+
+                Save it and it'll appear here for you.
+
+            </p>
+
+
+            <a href="{% url 'home' %}"
+               class="explore-btn">
+
+                <i class="fa-solid fa-compass"></i>
+
+                Explore Blogs
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+
+        </div>
+
+    {% endif %}
+
+
+</div>
+```
+
+</div>
+
+</body>
+</html>

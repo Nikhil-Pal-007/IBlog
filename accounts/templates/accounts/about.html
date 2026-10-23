@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About us</title>
+    <link rel="stylesheet" href="{% static 'accounts/about.css' %}">
+</head>
+
+<body>
+    <section class="about-hero">
+        <div class="hero-content">
+            <span>🚀 Our Story</span>
+
+            <h1>Where Ideas Become Stories</h1>
+
+            <p>
+                IBlog was created for curious minds who love learning,
+                sharing experiences, and discovering new perspectives.
+                Every article published here has the power to educate,
+                inspire, or spark meaningful conversations.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="{% url 'home' %}" class="btn-primary">Explore Blogs</a>
+                <a href="{% url 'write_blog' %}" class="btn-secondary">Start Writing</a>
+            </div>
+        </div>
+    </section>
+    <section class="mission-section">
+
+        <div class="mission-card">
+            <div class="icon">📚</div>
+            <h3>Learn</h3>
+            <p>Discover high-quality content from passionate writers.</p>
+        </div>
+
+        <div class="mission-card">
+            <div class="icon">✍️</div>
+            <h3>Create</h3>
+            <p>Share your knowledge and build your personal audience.</p>
+        </div>
+
+        <div class="mission-card">
+            <div class="icon">🌍</div>
+            <h3>Connect</h3>
+            <p>Join a community of readers and creators worldwide.</p>
+        </div>
+
+    </section>
+    <section class="journey-section">
+
+        <h2>Our Journey</h2>
+
+        <div class="timeline">
+
+            <div class="timeline-item">
+                <span>2025</span>
+                <h3>The Beginning</h3>
+                <p>The idea of creating a platform for bloggers was born.</p>
+            </div>
+
+            <div class="timeline-item">
+                <span>2026</span>
+                <h3>Launch</h3>
+                <p>IBlog officially launched with a mission to empower creators.</p>
+            </div>
+
+            <div class="timeline-item">
+                <span>Future</span>
+                <h3>Growing Together</h3>
+                <p>Expanding features and helping more voices reach the world.</p>
+            </div>
+
+        </div>
+
+    </section>
+    <section class="stats-section">
+
+        <div class="stat-box">
+            <h2>500+</h2>
+            <p>Articles Published</p>
+        </div>
+
+        <div class="stat-box">
+            <h2>100+</h2>
+            <p>Active Writers</p>
+        </div>
+
+        <div class="stat-box">
+            <h2>20K+</h2>
+            <p>Monthly Readers</p>
+        </div>
+
+    </section>
+    <section class="creator-section">
+
+        <div class="creator-card">
+
+            <img src="{% static 'images/founder.jpg' %}" alt="Founder">
+
+            <h2>Nitin Pal</h2>
+
+            <p class="role">Founder & Developer</p>
+
+            <p>
+                I built IBlog to create a platform where anyone can share
+                ideas, learn new skills, and connect through meaningful
+                content.
+            </p>
+
+        </div>
+
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,152 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+/* font-family:Arial; */
+}
+
+body{
+height:100vh;
+overflow:hidden;
+position:relative;
+font-family: 'Inter',sans-serif;
+line-height: 1.6;
+}
+.slogan{
+    font-family: 'Poppins',sans-serif;
+    font-size: 18px;
+    /* margin-top: 5px; */
+    font-style: italic;
+}
+.h1,h3{
+    font-family: 'Poppins',sans-serif;
+    /* font-weight: 700; */
+}
+
+/* DIAGONAL INDIAN FLAG SHADE */
+
+.container{
+display:flex;
+height:100vh;
+
+background:linear-gradient(
+135deg,
+#d35400 0%,     /* dark saffron */
+#ff9933 25%,    /* light saffron */
+#ffffff 50%,    /* white center */
+#6ed46e 75%,    /* light green */
+#0b6d0b 100%    /* dark green */
+);
+
+}
+
+
+/* ASHOKA CHAKRA */
+
+.chakra{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:350px;
+opacity:0.08;
+z-index:0;
+
+animation:spin 40s linear infinite;
+}
+
+@keyframes spin{
+from{transform:translate(-50%,-50%) rotate(0deg);}
+to{transform:translate(-50%,-50%) rotate(360deg);}
+}
+
+
+/* INTRO */
+
+.intro{
+flex:1;
+padding:100px 60px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+gap:20px;
+z-index:1;
+}
+
+.intro img{
+width:70px;
+margin-bottom:10px;
+}
+
+.intro h1{
+font-size:46px;
+}
+
+
+/* FEATURES */
+
+.features{
+display:flex;
+gap:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.3);
+backdrop-filter:blur(8px);
+padding:20px;
+border-radius:10px;
+width:170px;
+}
+
+
+/* LOGIN */
+
+.login-section{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:1;
+}
+
+.login-box{
+width:320px;
+padding:35px;
+
+background:rgba(255,255,255,0.25);
+backdrop-filter:blur(12px);
+
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+
+text-align:center;
+}
+
+.login-box input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border:none;
+border-radius:5px;
+}
+
+.login-box button{
+width:100%;
+padding:10px;
+margin-top:10px;
+background:#138808;
+border:none;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+.message-box {
+    margin-bottom: 15px;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin: 5px 0;
+    text-align: left;
+}

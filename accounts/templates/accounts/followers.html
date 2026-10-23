@@ -1,0 +1,21 @@
+<h2>{{ profile_user.username }}'s Followers</h2>
+
+{% for user in users %}
+
+<div class="user-card">
+
+    {% if user.profile.profile_pic %}
+        <img src="{{ user.profile.profile_pic.url }}">
+    {% endif %}
+
+    <a href="{% url 'profile_view' user.username %}">
+        {{ user.username }}
+    </a>
+
+</div>
+
+{% empty %}
+
+<p>No followers yet.</p>
+
+{% endfor %}
